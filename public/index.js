@@ -224,16 +224,37 @@ function deductibleOption()
 
 function computeAll()
 {
+
+alert(rentals[0]["id"]["payment"]["who"]);
   for(let i = 0; i<rentals.length;i++)
   {
       for(let j= 0 ; j<(actors.find(x=>x.rentalId ===rentals[i].id).payment.length);j++)
       {
 
+          if(  rentals[i]["id"]["payment"]["who"] === "driver")
+          {
+            rentals[i]["id"]["payment"]["who"]["amount"] = rentals[i]["price"];
+          }
+          if(  rentals[i]["id"]["payment"]["who"] === "partner")
+          {
+            rentals[i]["id"]["payment"]["who"]["amount"] = rentals[i]["price"]*0.70;
+          }
+          if(  rentals[i]["id"]["payment"]["who"] === "insurance")
+          {
+            rentals[i]["id"]["payment"]["who"]["amount"] = rentals[i]["insurance"];
+          }
+          if(  rentals[i]["id"]["payment"]["who"] === "treasury")
+          {
+            rentals[i]["id"]["payment"]["who"]["amount"] = rentals[i]["treasury"];
+          }
+          if(  rentals[i]["id"]["payment"]["who"] === "virtuo")
+          {
+            rentals[i]["id"]["payment"]["who"]["amount"] = rentals[i]["virtuo"];
+          }
       }
 
   }
 }
-
 
 rentalPrice();
 decreasePricing();
