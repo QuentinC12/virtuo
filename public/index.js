@@ -158,6 +158,88 @@ const actors = [{
   }]
 }];
 
+function rentalPrice()
+{
+  for(let i = 0; i< rentals.length;i++)
+  {
+    let datePickup = Date.parse(rentals[i]["pickupDate"]);
+    let dateReturn = Date.parse(rentals[i]["returnDate"]);
+    let time = ((dateReturn - datePickup)/(1000*24*60*60));
+    rentals[i]["price"] = (time+1)*cars.find(x=>x.id ===rentals[i].carId).pricePerDay + (rentals[i]["distance"])*cars.find(x=>x.id ===rentals[i].carId).pricePerKm;
+  }
+}
+
+function decreasePricing()
+{
+  for(let i = 0; i< rentals.length;i++)
+  {
+  let datePickup = Date.parse(rentals[i]["pickupDate"]);
+  let dateReturn = Date.parse(rentals[i]["returnDate"]);
+  let time = (((dateReturn - datePickup)/(1000*24*60*60)))+1;
+  if(time>1 && time<4)
+    {
+      rentals[i]["price"] = rentals[i]["price"] * 0.90;
+    }
+  if(time>4 && time<10)
+    {
+      rentals[i]["price"] = rentals[i]["price"] * 0.70;
+    }
+  if(time>10)
+      {
+        rentals[i]["price"] = rentals[i]["price"] * 0.50;
+      }
+  }
+}
+
+function comission()
+{
+  for(let i = 0; i< rentals.length;i++)
+  {
+    let datePickup = Date.parse(rentals[i]["pickupDate"]);
+    let dateReturn = Date.parse(rentals[i]["returnDate"]);
+    let time = ((dateReturn - datePickup)/(1000*24*60*60))+1;
+    let comission  = rentals[i]["price"] * 0.3;
+    rentals[i]["insurance"] = comission/2;
+    comission = comission/2;
+    rentals[i]["treasury"] = time*1;
+    comission = comission - rentals[i]["treasury"];
+    rentals[i]["virtuo"] = comission;
+
+  }
+}
+
+function deductibleOption()
+{
+
+  for(let i = 0; i<rentals.length;i++)
+  {
+    if(rentals[i]["options"]["deductibleReduction"]){
+      let datePickup = Date.parse(rentals[i]["pickupDate"]);
+      let dateReturn = Date.parse(rentals[i]["returnDate"]);
+      let time = ((dateReturn - datePickup)/(1000*24*60*60))+1;
+      rentals[i]["price"] = rentals[i]["price"] + time*4;
+    }
+  }
+}
+
+function computeAll()
+{
+  for(let i = 0; i<rentals.length;i++)
+  {
+      for(let j= 0 ; j<(actors.find(x=>x.rentalId ===rentals[i].id).payment.length);j++)
+      {
+
+      }
+
+  }
+}
+
+
+rentalPrice();
+decreasePricing();
+comission();
+deductibleOption();
+computeAll();
 console.log(cars);
 console.log(rentals);
 console.log(actors);
